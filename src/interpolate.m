@@ -1,9 +1,20 @@
-function interpolate()
-  points = [ Point(0, 0) Point(1, 1) Point(2, 3) Point(3, 3) Point(4, 4) Point(5, 5)];
-  interpolator = Interpolator(points, 5, -1);
+function interpolate( filename )
+  file = fopen(filename, "r");
+  data = fscanf(file, "%f");
+  fclose("all");
+  power = data(1);
+  sz = data(2);
   
-  sz = size(points);
-  sz = sz(2);
+  points(1:sz) = Point(0, 0);
+  for i=1:sz
+    x = data(3 + (i - 1) * 2);
+    y = data(3 + (i - 1) * 2 + 1);
+    points(i) = Point(x, y);
+  end
+  [~, ind] = sort([points.x]);
+  points = points(ind);
+  
+  interpolator = Interpolator(points, power, -1);
   
   pxs = Point.xs(points);
   figure(1);
